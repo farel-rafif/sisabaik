@@ -161,6 +161,22 @@ a:hover {text-decoration-thickness: 0.18em;
     font-size: 1.1rem;
 }
 
+.icon {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-inline-end: 0.5rem;
+    vertical-align: middle;
+}
+
+.hero-image {
+    border: 0.0625rem solid var(--color-border);
+    border-radius: var(--radius-large);
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
 .hero-panel {
     padding: 1.5rem;
     border: 0.0625rem solid var(--color-border);
