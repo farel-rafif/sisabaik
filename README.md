@@ -1,67 +1,49 @@
-```markdown
-# SisaBaik API (Chapter 7)
+# SisaBaik API
 
-Aplikasi back-end REST API untuk platform SisaBaik yang mengintegrasikan Express.js dan basis data relasional PostgreSQL. Proyek ini dikembangkan sebagai bagian dari mata kuliah Pengembangan Web (Program Studi Bisnis Digital, Universitas Negeri Padang)[cite: 1, 2].
+SisaBaik adalah platform yang menghubungkan penyedia makanan dengan konsumen guna menekan tingkat limbah makanan melalui penjualan surplus produk berkualitas.
 
-## Prasyarat
-- Node.js versi 22 atau lebih baru[cite: 2]
-- PostgreSQL lokal (dengan database `sisabaik_dev` dan skema dari Chapter 6)[cite: 2, 4]
-- npm[cite: 2]
+## Struktur Proyek dan Migrasi Database
 
-## Cara Menjalankan Proyek
-1. Buat dan sesuaikan berkas `.env` di root proyek berdasarkan `.env.example`[cite: 10, 13]:
-   ```env
-   PORT=3000
-   PGHOST=localhost
-   PGPORT=5432
-   PGDATABASE=sisabaik_dev
-   PGUSER=postgres
-   PGPASSWORD=GANTI DENGAN PASSWORD LOKAL
+Proyek ini berbasis PostgreSQL. Urutan eksekusi skrip migrasi dan data awal:
 
-```
-2. Install dependencies:
+* `database/01_schema.sql` - Skema basis data relasional utama.
+* `database/02_seed.sql` - Data awal untuk pengujian.
+* `database/03_queries.sql` hingga `06_...` - Kumpulan query pendukung CRUD dan transaksi.
+* `database/07_auth.sql` - Migrasi sistem autentikasi, manajemen token, dan pencatatan sesi.
 
-```bash
-npm install
+## Fitur Pendaftaran Mandiri dan Peran Pengguna
 
+Sistem menyediakan pendaftaran mandiri untuk dua peran utama:
 
-```
-3. Jalankan server dalam mode pengembangan:
+1. **Konsumen**: Pengguna umum yang dapat melihat katalog publik, membuat pesanan, dan bertransaksi.
+2. **Penyedia**: Pengusaha makanan yang mendaftarkan profil usaha untuk menawarkan surplus makanan.
+   * **Peninjauan Penyedia**: Akun penyedia baru memerlukan proses peninjauan atau verifikasi sebelum diizinkan mempublikasikan penawaran di katalog publik.
 
-```bash
-npm run dev
+## Keamanan, Pengujian Autentikasi, dan Logout
 
-```
+* **Pengujian Auth (`auth:test`)**: Jalankan perintah berikut untuk menguji integritas autentikasi dan alur token:
+  ```bash
+  npm run auth:test
+  ```
+* **Efek Logout Semua Sesi**: Saat pengguna melakukan logout dari semua sesi, sistem menghapus seluruh token aktif dan sesi terkait berdasarkan migrasi `07_auth.sql`. Token JWT lama langsung tidak valid di seluruh perangkat.
 
+## Konfigurasi Environment
 
-4. Buka aplikasi melalui browser di `http://127.0.0.1:3000` untuk menggunakan halaman penguji.
+Gunakan daftar nama variabel lingkungan berikut pada file `.env` (tanpa menyertakan nilai rahasia):
 
+* `PORT`
+* `DATABASE_URL`
+* `JWT_SECRET`
+* `NODE_ENV`
 
+## Cara Menjalankan Server dan Halaman
 
-## Pengujian API
-
-* **Uji Mutasi dan CRUD (Otomatis):**
-```bash
-npm run api:test
-
-```
-
-
-* **Uji Konkurensi / Request Bersamaan:**
-```bash
-node scripts/uji-konkurensi.js
-
-```
-
-## Catatan Implementasi & Batasan
-
-* **Identitas & Kontrak Baru:** Pembuatan pesanan sekarang menggunakan `emailPembeli` (mengacu pada tabel `pengguna` fiktif yang aktif) dan ID penawaran/pesanan dikirim dalam response sebagai string digit.
-
-
-* **Validasi & Transaksi:** Seluruh mutasi pesanan menggunakan transaksi database atomik (`REPEATABLE READ`), penguncian baris (`FOR UPDATE`), serta memvalidasi aturan satu penyedia per pesanan (`MIXED_PROVIDER`).
-
-
-* **Autentikasi:** Aplikasi ini masih berjalan secara lokal dengan akun latihan dan belum menerapkan sistem login/otorisasi penuh.
-
-```
-```
+1. Instal dependensi:
+   ```bash
+   npm install
+   ```
+2. Jalankan server dalam mode pengembangan:
+   ```bash
+   npm run dev
+   ```
+3. Akses antarmuka statis melalui browser pada file `public/index.html` atau alur autentikasi di `public/auth.html`.
