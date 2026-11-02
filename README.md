@@ -1,49 +1,47 @@
-# SisaBaik API
+# SisaBaik - Frontend Vue 3
 
-SisaBaik adalah platform yang menghubungkan penyedia makanan dengan konsumen guna menekan tingkat limbah makanan melalui penjualan surplus produk berkualitas.
+SisaBaik adalah aplikasi web untuk pengelolaan dan penyelamatan surplus makanan guna mengurangi limbah pangan. Proyek ini dibangun menggunakan Vue 3 dengan Composition API, Vite, dan Tailwind CSS.
 
-## Struktur Proyek dan Migrasi Database
+Pada Chapter 9 ini, fokus utama adalah membangun antarmuka interaktif sisi klien secara modular, mencakup manajemen props dan emits, pengelolaan fixture data lokal di memori, validasi formulir reaktif, serta pemisahan komponen antarmuka yang meliputi katalog, form penawaran, ringkasan, dan state kosong.
 
-Proyek ini berbasis PostgreSQL. Urutan eksekusi skrip migrasi dan data awal:
+## Persyaratan Sistem dan Lingkungan
 
-* `database/01_schema.sql` - Skema basis data relasional utama.
-* `database/02_seed.sql` - Data awal untuk pengujian.
-* `database/03_queries.sql` hingga `06_...` - Kumpulan query pendukung CRUD dan transaksi.
-* `database/07_auth.sql` - Migrasi sistem autentikasi, manajemen token, dan pencatatan sesi.
+* Node.js: Versi 22.18.0 atau 24.12.0 (atau yang lebih baru sesuai spesifikasi modul)
+* npm: Versi terbaru yang disertakan bersama Node.js
 
-## Fitur Pendaftaran Mandiri dan Peran Pengguna
+## Panduan Menjalankan Proyek
 
-Sistem menyediakan pendaftaran mandiri untuk dua peran utama:
+Semua perintah di bawah ini dijalankan di dalam direktori `frontend`:
 
-1. **Konsumen**: Pengguna umum yang dapat melihat katalog publik, membuat pesanan, dan bertransaksi.
-2. **Penyedia**: Pengusaha makanan yang mendaftarkan profil usaha untuk menawarkan surplus makanan.
-   * **Peninjauan Penyedia**: Akun penyedia baru memerlukan proses peninjauan atau verifikasi sebelum diizinkan mempublikasikan penawaran di katalog publik.
+1. Masuk ke folder frontend:
+   ```bash
+   cd frontend
+   ```
 
-## Keamanan, Pengujian Autentikasi, dan Logout
-
-* **Pengujian Auth (`auth:test`)**: Jalankan perintah berikut untuk menguji integritas autentikasi dan alur token:
-  ```bash
-  npm run auth:test
-  ```
-* **Efek Logout Semua Sesi**: Saat pengguna melakukan logout dari semua sesi, sistem menghapus seluruh token aktif dan sesi terkait berdasarkan migrasi `07_auth.sql`. Token JWT lama langsung tidak valid di seluruh perangkat.
-
-## Konfigurasi Environment
-
-Gunakan daftar nama variabel lingkungan berikut pada file `.env` (tanpa menyertakan nilai rahasia):
-
-* `PORT`
-* `DATABASE_URL`
-* `JWT_SECRET`
-* `NODE_ENV`
-
-## Cara Menjalankan Server dan Halaman
-
-1. Instal dependensi:
+2. Instalasi Dependensi:
    ```bash
    npm install
    ```
-2. Jalankan server dalam mode pengembangan:
+   (Atau gunakan `npm ci` untuk instalasi bersih berbasis `package-lock.json`)
+
+3. Menjalankan Server Pengembangan:
    ```bash
    npm run dev
    ```
-3. Akses antarmuka statis melalui browser pada file `public/index.html` atau alur autentikasi di `public/auth.html`.
+   Akses URL lokal yang tertera di terminal, biasanya pada alamat `http://localhost:5173`.
+
+4. Membuat Berkas Produksi:
+   ```bash
+   npm run build
+   ```
+
+5. Pratinjau Hasil Build:
+   ```bash
+   npm run preview
+   ```
+
+## Struktur Aset dan Catatan Arsitektur
+
+* Aset Ilustrasi SVG (`src/assets/`): Berisi logo aplikasi dan berbagai ikon ilustrasi pendukung status kosong serta kategori makanan.
+* Fixture Data dan Memori Lokal: Data awal penawaran makanan serta ringkasan pembeli dan penyedia dikelola secara lokal di dalam memori browser (state lokal Vue) untuk keperluan interaksi antarmuka pada modul ini.
+* Catatan Penting: Browser tidak memanggil API backend pada modul ini. Backend Modul 8 tetap memiliki fungsi pendaftaran mandiri, verifikasi penyedia, autentikasi, serta otorisasi; integrasi penuh dengan backend akan dilakukan pada pertemuan berikutnya.
