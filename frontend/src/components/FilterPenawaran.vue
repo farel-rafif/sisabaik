@@ -22,7 +22,7 @@ const emit = defineEmits(["ubah-pencarian", "ubah-kategori", "reset"]);
           id="cari"
           type="search"
           maxlength="100"
-          placeholder="Roti, nasi, atau nama usaha..."
+          placeholder="Roti, nasi, atau nama usaha…"
           :value="props.pencarian"
           @input="emit('ubah-pencarian', $event.target.value)"
         />
