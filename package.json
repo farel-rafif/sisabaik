@@ -24,7 +24,7 @@
         "penyedia:verifikasi:cloud": "node --env-file=.env.cloud scripts/verifikasi-penyedia.js --cloud"
     },
     "engines": {
-        "node": ">=22"
+        "node": "24.x"
     },
     "dependencies": {
         "bcryptjs": "3.0.3",
