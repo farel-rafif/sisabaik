@@ -182,7 +182,7 @@ async function logout() {
     </div>
     <div class="container footer-bottom">
       <p>© 2026 SisaBaik</p>
-      <p>Kesempatan kedua untuk makanan yang masih bernilai.</p>
+      <p>Farel Muhammad Rafif - farel-rafif</p>
     </div>
   </footer>
 </template>
