@@ -78,28 +78,7 @@ app.use("/api/pesanan", pesananRouter);
 app.use("/api/dashboard", dashboardRouter);
 // API yang tidak dikenal harus tetap mengembalikan JSON 404.
 app.use("/api", routeTidakDitemukan);
-if (produksi) {
-  const dist = fileURLToPath(new URL("../frontend/dist/", import.meta.url));
-  if (!existsSync(join(dist, "index.html"))) {
-    throw new Error("Build Vue belum ada. Jalankan npm run build.");
-  }
-  app.use(
-    "/assets",
-    express.static(join(dist, "assets"), {
-      immutable: true,
-      maxAge: "1y",
-    }),
-  );
-  app.use(
-    express.static(dist, {
-      setHeaders(res, path) {
-        if (path.endsWith(".html")) {
-          res.set("Cache-Control", "no-cache");
-        }
-      },
-    }),
-  );
-} else {
+if (!produksi) {
   app.use(
     express.static(fileURLToPath(new URL("../public/", import.meta.url))),
   );
